@@ -1,0 +1,12 @@
+{
+  "name": "soaGateway",
+  "description": "Express Gateway Instance Bootstraped from Command Line",
+  "repository": {},
+  "license": "UNLICENSED",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "express-gateway": "^1.16.3",
+    "express-gateway-plugin-jwt": "github:renatoramiro/express-gateway-plugin-jwt"
+  }
+}

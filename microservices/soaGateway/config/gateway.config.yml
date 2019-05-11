@@ -1,0 +1,80 @@
+http:
+  port: 8082
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  api:
+    host: '*'
+    paths: '/ip'
+  catalog:
+    host: '*'
+    paths: '/catalog'
+  orders:
+    host: '*'
+    paths: '/orders'
+  users:
+    host: '*'
+    paths: '/users'
+
+serviceEndpoints:
+  httpbin:
+    url: 'https://httpbin.org'
+  httpCatalog:
+    url: 'http://localhost:5000/'
+  httpOrders:
+    url: 'http://localhost:8005/' #cambiar ip
+  httpUsers:
+    url: 'http://localhost:8008/' #cambiar ip
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+  - jwt
+pipelines:
+  orders1:
+    apiEndpoints:
+      - orders
+    policies:
+      - jwt:
+        - action:
+            secret: "soa2019"
+      - proxy:
+        - action:
+            serviceEndpoint: httpOrders
+            changeOrigin: true
+  products:
+    apiEndpoints:
+      - catalog
+    policies:
+      - jwt:
+        - action:
+            secret: "soa2019"
+      - proxy:
+        - action:
+            serviceEndpoint: httpCatalog
+            changeOrigin: true
+  ip:
+    apiEndpoints:
+      - api
+    policies:
+      - jwt:
+        - action:
+            secret: "soa2019"
+      - proxy:
+          - action:
+              serviceEndpoint: httpbin
+              changeOrigin: true
+  users:
+    apiEndpoints:
+      - users
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: httpUsers
+              schangeOrigin: true
